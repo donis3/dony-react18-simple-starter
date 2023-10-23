@@ -18,7 +18,7 @@ export default function Navbar() {
 				<div className="container mx-auto flex    h-14  flex-row items-center justify-between px-2 py-4">
 					{/* App Name */}
 					<h1 className="flex-1  p-1 text-2xl font-bold">
-						Dony Training
+						DonyReact
 					</h1>
 					{/* Desktop Menu Items */}
 					<ul className="hidden min-w-[200px]  flex-shrink flex-wrap  gap-3 p-1 text-xl md:flex">

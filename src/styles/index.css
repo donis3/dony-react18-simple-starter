@@ -1,0 +1,11 @@
+/* Import local font (Define all font-face directives in a single file for each font */
+@import url("./fonts/gabarito/gabarito.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
+body {
+	@apply bg-gradient-to-br from-gray-900 to-black min-h-screen;
+}

@@ -19,7 +19,7 @@ export default function App() {
 			</main>
 			<footer className="h-auto w-full bg-black bg-opacity-30 ">
 				<div className="container mx-auto flex h-full flex-col gap-3 p-3 text-white md:flex md:flex-row md:items-start md:justify-between md:gap-10">
-					<div>&copy;2023 Deniz Özkan</div>
+					<div>&copy;2023 Donis</div>
 					<div className="flex-1 ">Footer-mid</div>
 					<div>Footer-Right</div>
 				</div>

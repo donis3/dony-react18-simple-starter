@@ -1,11 +1,18 @@
-import React, { useState } from "react";
-import { FaBeer } from "react-icons/fa";
+import { useState } from "react";
+import {
+	FaCommentDots,
+	FaEnvelope,
+	FaHome,
+	FaLayerGroup,
+} from "react-icons/fa";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { cn } from "../lib/utils";
 import useClickOutside from "../hooks/useClickOutside";
+import { Link, LinkProps } from "react-scroll";
 
 export default function Navbar() {
 	const [menuOpen, setMenuOpen] = useState(false);
+	const toggleMenu = () => setMenuOpen(!menuOpen);
 	//Listener for outside clicks for mobile menu. So we can close the menu if clicked outside the menu
 	const ref = useClickOutside<HTMLDivElement>(() => setMenuOpen(false));
 
@@ -14,27 +21,36 @@ export default function Navbar() {
 			{/* Background blur under navbar */}
 			<div className="fixed left-0 top-0 z-10 h-14 w-full backdrop-blur-md"></div>
 			{/* Navbar element */}
-			<nav className="    fixed  left-0 top-0 z-20 h-14 w-full whitespace-nowrap bg-black bg-opacity-10 font-headline text-white shadow-md">
+			<nav className="    fixed  left-0 top-0 z-20 h-14 w-full whitespace-nowrap bg-slate-800 bg-opacity-40 font-headline text-white shadow-md">
 				<div className="container mx-auto flex    h-14  flex-row items-center justify-between px-2 py-4">
 					{/* App Name */}
-					<h1 className="flex-1  p-1 text-2xl font-bold">
-						DonyReact
+					<h1 className="flex-1   cursor-pointer text-2xl font-bold">
+						<Link
+							to="home"
+							href="#"
+							smooth
+							offset={-56}
+							className="rounded-lg  p-1 hover:bg-white/5"
+							role="navigation"
+						>
+							DonyReact
+						</Link>
 					</h1>
 					{/* Desktop Menu Items */}
-					<ul className="hidden min-w-[200px]  flex-shrink flex-wrap  gap-3 p-1 text-xl md:flex">
+					<nav className=" hidden  min-w-[200px] flex-shrink  flex-wrap gap-3 p-1 text-xl md:flex">
 						<NavMenuItems />
-					</ul>
+					</nav>
 					{/* Mobile menu toggle btn (Hidden if width >= md) */}
-					<button type="button" className=" py-1 px-3 md:hidden">
+					<button type="button" className=" px-3 py-1 md:hidden">
 						{menuOpen ? (
 							<AiOutlineClose
 								className="text-2xl"
-								onClick={() => setMenuOpen(false)}
+								onClick={toggleMenu}
 							/>
 						) : (
 							<AiOutlineMenu
 								className="text-2xl"
-								onClick={() => setMenuOpen(true)}
+								onClick={toggleMenu}
 							/>
 						)}
 					</button>
@@ -48,60 +64,74 @@ export default function Navbar() {
 					)}
 				>
 					{/* Mobile Menu Items */}
-					<ul className="items-left flex flex-col gap-y-2 p-4">
+
+					<nav className="items-left  flex flex-col gap-y-2 p-4">
 						<NavMenuItems />
-					</ul>
+					</nav>
 				</div>
 			</nav>
 		</>
 	);
 }
 
-// TODO: Add target functionality
+type NavItemProps = {
+	active?: boolean;
+} & LinkProps;
 
-function NavMenuItem({
-	children,
-	target,
-	active,
-	className,
-	...props
-}: NavMenuItemProps) {
+function NavItem({ children, active, className, ...props }: NavItemProps) {
+	const [isActive, setActive] = useState(false);
 	return (
-		<li
+		<Link
 			className={cn(
-				"flex items-center  gap-2 rounded-md bg-gray-700 bg-opacity-20 p-1 text-lg md:bg-transparent md:text-base",
+				"group relative flex items-center gap-1  rounded-md bg-gray-700 bg-opacity-20 px-2 py-1 text-lg font-normal hover:outline hover:outline-gray-500 md:bg-transparent md:text-base ",
 				className,
 				{
-					"bg-blue-300": active,
+					"bg-blue-300 font-bold": isActive,
 				},
 			)}
-			{...props}
+			to={props.to}
+			smooth="easeInQuad"
+			href="#"
+			spy
+			onSetActive={() => {
+				setActive(true);
+			}}
+			onSetInactive={() => {
+				setActive(false);
+			}}
+			offset={-56} //navbar height in pixels
+			duration={600}
 		>
 			{children}
-		</li>
+			<div
+				className={cn(
+					"absolute bottom-0 left-0	 hidden h-1 w-full bg-gradient-to-r from-slate-50 to-slate-200 bg-[size:75%_75%] bg-[position:center] bg-no-repeat",
+					{ " md:block": isActive },
+				)}
+			></div>
+		</Link>
 	);
 }
-
-type NavMenuItemProps = {
-	target?: string;
-	active?: boolean;
-} & React.ComponentProps<"li">;
 
 function NavMenuItems() {
 	return (
 		<>
-			<NavMenuItem>
-				<FaBeer className="text-2xl text-blue-600" />
-				Item 1
-			</NavMenuItem>
-			<NavMenuItem>
-				<FaBeer className="text-2xl text-blue-600" />
-				Item 2
-			</NavMenuItem>
-			<NavMenuItem>
-				<FaBeer className="text-2xl text-blue-600" />
-				Item 3
-			</NavMenuItem>
+			<NavItem to="home">
+				<FaHome className="text-xl text-current opacity-50  group-hover:opacity-100 " />
+				Home
+			</NavItem>
+			<NavItem to="services">
+				<FaLayerGroup className="text-xl text-current opacity-50  group-hover:opacity-100 " />
+				Services
+			</NavItem>
+			<NavItem to="testimonials">
+				<FaCommentDots className="text-xl text-current opacity-50  group-hover:opacity-100 " />
+				Testimonials
+			</NavItem>
+			<NavItem to="contact">
+				<FaEnvelope className="text-xl text-current opacity-50  group-hover:opacity-100 " />
+				Contact
+			</NavItem>
 		</>
 	);
 }

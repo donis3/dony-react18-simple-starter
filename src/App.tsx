@@ -10,11 +10,23 @@ export default function App() {
 			<Navbar />
 			{/* Flex-1 so main content area fills the screen */}
 			<main className="h-full w-full flex-1 ">
-				<Section radial>
+				<Section radial name="home">
 					<Hero />
 				</Section>
-				<Section className="bg-gradient-to-br from-rose-200 to-teal-100">
+				<Section
+					name="services"
+					className="bg-gradient-to-br from-gray-300 to-teal-100 dark:from-gray-800 dark:to-teal-800"
+				>
 					<Services />
+				</Section>
+				<Section name="testimonials" radial className="text-white">
+					Testimonials
+				</Section>
+				<Section
+					name="contact"
+					className="bg-gradient-to-br from-gray-300 to-teal-100 dark:from-gray-800 dark:to-teal-800"
+				>
+					Contact Me!
 				</Section>
 			</main>
 			<footer className="h-auto w-full bg-black bg-opacity-30 ">

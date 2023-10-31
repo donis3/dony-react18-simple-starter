@@ -14,7 +14,7 @@ export default function useScrollY(handler: NavHandler, offset = 0) {
 		handler(window.scrollY, offset);
 
 		//Create an event handler for scroll events
-		const handleScroll = (e: Event) => handler(window.scrollY, offset);
+		const handleScroll = () => handler(window.scrollY, offset);
 
 		//Add event listener on window object
 		window.addEventListener("scroll", handleScroll);

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import {
 	FaCommentDots,
 	FaEnvelope,
@@ -19,7 +19,7 @@ export default function Navbar() {
 	const ref = useClickOutside<HTMLDivElement>(() => setMenuOpen(false));
 	const navRef = useRef<HTMLDivElement>(null);
 
-	//Handler for scroll Y event. Change navbar background color accordingly. 
+	//Handler for scroll Y event. Change navbar background color accordingly.
 	const handleBackdrop = (yPos: number, offset: number) => {
 		//Verify reference html div is loaded
 		if (!navRef.current) return;
@@ -33,7 +33,7 @@ export default function Navbar() {
 		}
 	};
 
-	//Pass the handler function to scroll Y listener. Add offset 
+	//Pass the handler function to scroll Y listener. Add offset
 	useScrollY(handleBackdrop, 50);
 
 	return (

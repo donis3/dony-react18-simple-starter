@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
 	FaCommentDots,
 	FaEnvelope,
@@ -9,19 +9,42 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { cn } from "../lib/utils";
 import useClickOutside from "../hooks/useClickOutside";
 import { Link, LinkProps } from "react-scroll";
+import useScrollY from "../hooks/useScrollY";
 
 export default function Navbar() {
 	const [menuOpen, setMenuOpen] = useState(false);
+
 	const toggleMenu = () => setMenuOpen(!menuOpen);
 	//Listener for outside clicks for mobile menu. So we can close the menu if clicked outside the menu
 	const ref = useClickOutside<HTMLDivElement>(() => setMenuOpen(false));
+	const navRef = useRef<HTMLDivElement>(null);
+
+	//Handler for scroll Y event. Change navbar background color accordingly. 
+	const handleBackdrop = (yPos: number, offset: number) => {
+		//Verify reference html div is loaded
+		if (!navRef.current) return;
+		//Check y position against offset
+		if (yPos > offset) {
+			//Window is not at the top
+			navRef.current.style.background = "rgba(23, 33, 53, 0.7)";
+		} else {
+			//Window is at the top
+			navRef.current.style.background = "none";
+		}
+	};
+
+	//Pass the handler function to scroll Y listener. Add offset 
+	useScrollY(handleBackdrop, 50);
 
 	return (
 		<>
 			{/* Background blur under navbar */}
-			<div className="fixed left-0 top-0 z-10 h-14 w-full backdrop-blur-md"></div>
+			<div className="fixed left-0 top-0 z-10 h-14 w-full  bg-opacity-10 backdrop-blur-md"></div>
 			{/* Navbar element */}
-			<nav className="    fixed  left-0 top-0 z-20 h-14 w-full whitespace-nowrap bg-slate-800 bg-opacity-40 font-headline text-white shadow-md">
+			<nav
+				ref={navRef}
+				className="fixed  left-0 top-0 z-20 h-14 w-full whitespace-nowrap  font-headline text-white shadow-md transition-all duration-700"
+			>
 				<div className="container mx-auto flex    h-14  flex-row items-center justify-between px-2 py-4">
 					{/* App Name */}
 					<h1 className="flex-1   cursor-pointer text-2xl font-bold">
@@ -41,17 +64,16 @@ export default function Navbar() {
 						<NavMenuItems />
 					</nav>
 					{/* Mobile menu toggle btn (Hidden if width >= md) */}
-					<button type="button" className=" px-3 py-1 md:hidden">
+					<button
+						type="button"
+						className=" px-3 py-1 md:hidden"
+						tabIndex={1}
+						onClick={toggleMenu}
+					>
 						{menuOpen ? (
-							<AiOutlineClose
-								className="text-2xl"
-								onClick={toggleMenu}
-							/>
+							<AiOutlineClose className="text-2xl" />
 						) : (
-							<AiOutlineMenu
-								className="text-2xl"
-								onClick={toggleMenu}
-							/>
+							<AiOutlineMenu className="text-2xl" />
 						)}
 					</button>
 				</div>
@@ -59,8 +81,8 @@ export default function Navbar() {
 				<div
 					ref={ref}
 					className={cn(
-						"fixed left-0 top-14 h-[calc(100%-56px)] w-0 min-w-0 overflow-hidden border-r   border-gray-900 bg-gray-950  transition-all duration-300 ease-out md:hidden",
-						{ "w-3/5 min-w-[200px]": menuOpen },
+						"fixed left-0 top-14 h-[calc(100%-56px)] w-0 min-w-0 overflow-hidden border-r border-gray-900  bg-gray-950 text-lg  transition-all duration-300 ease-out md:hidden",
+						{ "w-full min-w-[200px] sm:w-1/2": menuOpen },
 					)}
 				>
 					{/* Mobile Menu Items */}
@@ -83,7 +105,7 @@ function NavItem({ children, active, className, ...props }: NavItemProps) {
 	return (
 		<Link
 			className={cn(
-				"group relative flex items-center gap-1  rounded-md bg-gray-700 bg-opacity-20 px-2 py-1 text-lg font-normal hover:outline hover:outline-gray-500 md:bg-transparent md:text-base ",
+				"group relative flex items-center gap-2  rounded-md bg-gray-700 bg-opacity-20 px-2 py-1 font-normal hover:outline hover:outline-gray-500 md:bg-transparent ",
 				className,
 				{
 					"bg-blue-300 font-bold": isActive,
@@ -105,7 +127,7 @@ function NavItem({ children, active, className, ...props }: NavItemProps) {
 			{children}
 			<div
 				className={cn(
-					"absolute bottom-0 left-0	 hidden h-1 w-full bg-gradient-to-r from-slate-50 to-slate-200 bg-[size:75%_75%] bg-[position:center] bg-no-repeat",
+					"absolute bottom-0 left-0	 hidden h-1 w-full bg-gradient-to-r from-slate-50 to-slate-200 bg-[size:100%_25%] bg-[position:center] bg-no-repeat",
 					{ " md:block": isActive },
 				)}
 			></div>

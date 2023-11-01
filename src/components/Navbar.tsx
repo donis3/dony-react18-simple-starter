@@ -60,8 +60,8 @@ export default function Navbar() {
 						</Link>
 					</h1>
 					{/* Desktop Menu Items */}
-					<nav className=" hidden  min-w-[200px] flex-shrink  flex-wrap gap-3 p-1 text-xl md:flex">
-						<NavMenuItems />
+					<nav className=" hidden  min-w-[200px] flex-shrink  flex-wrap gap-3 p-1 text-lg md:flex">
+						<NavMenuItems setMenuOpen={setMenuOpen} />
 					</nav>
 					{/* Mobile menu toggle btn (Hidden if width >= md) */}
 					<button
@@ -88,7 +88,7 @@ export default function Navbar() {
 					{/* Mobile Menu Items */}
 
 					<nav className="items-left  flex flex-col gap-y-2 p-4">
-						<NavMenuItems />
+						<NavMenuItems setMenuOpen={setMenuOpen} />
 					</nav>
 				</div>
 			</nav>
@@ -98,17 +98,24 @@ export default function Navbar() {
 
 type NavItemProps = {
 	active?: boolean;
+	setMenuOpen: any;
 } & LinkProps;
 
-function NavItem({ children, active, className, ...props }: NavItemProps) {
+function NavItem({
+	children,
+	active,
+	setMenuOpen,
+	className,
+	...props
+}: NavItemProps) {
 	const [isActive, setActive] = useState(false);
 	return (
 		<Link
 			className={cn(
-				"group relative flex items-center gap-2  rounded-md bg-gray-700 bg-opacity-20 px-2 py-1 font-normal hover:outline hover:outline-gray-500 md:bg-transparent ",
+				"group relative flex items-center gap-2  rounded-md bg-gray-700 bg-opacity-20 px-2 py-1 transition-all duration-500 hover:outline hover:outline-gray-500 md:bg-transparent",
 				className,
 				{
-					"bg-blue-300 font-bold": isActive,
+					"bg-blue-300 text-xl font-bold": isActive,
 				},
 			)}
 			to={props.to}
@@ -122,7 +129,10 @@ function NavItem({ children, active, className, ...props }: NavItemProps) {
 				setActive(false);
 			}}
 			offset={-56} //navbar height in pixels
-			duration={600}
+			duration={(distance) => {
+				return Math.abs(distance / 2); // 2 pixels per millisecond
+			}}
+			onClick={() => setMenuOpen(false)}
 		>
 			{children}
 			<div
@@ -135,22 +145,22 @@ function NavItem({ children, active, className, ...props }: NavItemProps) {
 	);
 }
 
-function NavMenuItems() {
+function NavMenuItems({ setMenuOpen }: { setMenuOpen: any }) {
 	return (
 		<>
-			<NavItem to="home">
+			<NavItem to="home" setMenuOpen={setMenuOpen}>
 				<FaHome className="text-xl text-current opacity-50  group-hover:opacity-100 " />
 				Home
 			</NavItem>
-			<NavItem to="services">
+			<NavItem to="services" setMenuOpen={setMenuOpen}>
 				<FaLayerGroup className="text-xl text-current opacity-50  group-hover:opacity-100 " />
 				Services
 			</NavItem>
-			<NavItem to="testimonials">
+			<NavItem to="testimonials" setMenuOpen={setMenuOpen}>
 				<FaCommentDots className="text-xl text-current opacity-50  group-hover:opacity-100 " />
 				Testimonials
 			</NavItem>
-			<NavItem to="contact">
+			<NavItem to="contact" setMenuOpen={setMenuOpen}>
 				<FaEnvelope className="text-xl text-current opacity-50  group-hover:opacity-100 " />
 				Contact
 			</NavItem>

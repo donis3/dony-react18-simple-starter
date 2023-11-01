@@ -1,3 +1,4 @@
+import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import Section from "./components/Section";
@@ -20,7 +21,7 @@ export default function App() {
 					<Services />
 				</Section>
 				<Section name="testimonials" radial className="text-white">
-					Testimonials
+					Testimonials and stuff!
 				</Section>
 				<Section
 					name="contact"
@@ -29,13 +30,8 @@ export default function App() {
 					Contact Me!
 				</Section>
 			</main>
-			<footer className="h-auto w-full bg-black bg-opacity-30 ">
-				<div className="container mx-auto flex h-full flex-col gap-3 p-3 text-white md:flex md:flex-row md:items-start md:justify-between md:gap-10">
-					<div>&copy;2023 Donis!</div>
-					<div className="flex-1 ">Footer-mid</div>
-					<div>Footer-Right</div>
-				</div>
-			</footer>
+
+			<Footer />
 		</div>
 	);
 }

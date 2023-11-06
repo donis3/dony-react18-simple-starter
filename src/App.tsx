@@ -3,6 +3,7 @@ import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import Section from "./components/Section";
 import Services from "./components/Services";
+import Testimonials from "./components/Testimonials";
 
 // Main Layout for the app defined here.
 export default function App() {
@@ -11,23 +12,35 @@ export default function App() {
 			<Navbar />
 			{/* Flex-1 so main content area fills the screen */}
 			<main className="h-full w-full flex-1 ">
-				<Section radial name="home">
-					<Hero />
+				<Section radial name="home" fullHeight={true}>
+					<div className="container mx-auto  p-3 ">
+						<Hero />
+					</div>
 				</Section>
 				<Section
 					name="services"
 					className="bg-gradient-to-br from-gray-300 to-teal-100 dark:from-gray-800 dark:to-teal-800"
 				>
-					<Services />
-				</Section>
-				<Section name="testimonials" radial className="text-white">
-					Testimonials and stuff!
+					<div className="container mx-auto h-full min-h-[calc(100vh-3.5rem)] p-3 ">
+						<Services />
+					</div>
 				</Section>
 				<Section
+					name="testimonials"
+					radial={true}
+					fullHeight={false}
+					className="flex flex-col justify-center py-10"
+				>
+					<Testimonials />
+				</Section>
+				<Section
+					fullHeight={true}
 					name="contact"
 					className="bg-gradient-to-br from-gray-300 to-teal-100 dark:from-gray-800 dark:to-teal-800"
 				>
-					Contact Me!
+					<div className="container mx-auto h-full  p-3 ">
+						Contact Me!
+					</div>
 				</Section>
 			</main>
 

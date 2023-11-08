@@ -1,3 +1,4 @@
+import ContactUs from "./components/ContactUs";
 import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
@@ -29,18 +30,18 @@ export default function App() {
 					name="testimonials"
 					radial={true}
 					fullHeight={false}
-					className="flex flex-col justify-center py-10"
+					className="flex flex-col justify-center py-10 px-4"
 				>
 					<Testimonials />
 				</Section>
 				<Section
 					fullHeight={true}
 					name="contact"
-					className="bg-gradient-to-br from-gray-300 to-teal-100 dark:from-gray-800 dark:to-teal-800"
+					className="bg-gradient-to-br from-gray-300 to-teal-100 dark:from-gray-800 dark:to-teal-800 flex flex-col justify-center py-10 px-4"
 				>
-					<div className="container mx-auto h-full  p-3 ">
-						Contact Me!
-					</div>
+					
+						<ContactUs />
+					
 				</Section>
 			</main>
 
